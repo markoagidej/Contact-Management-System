@@ -80,6 +80,17 @@ Exit the app. Thanks for using!
 
 ## Other Features
 
-In addition to the actions you can take from the main menu, this program also features backups and restoring functionality!
-Anytime you make a change to your contact data, the change will be reflected in a backup file.
+In addition to the actions you can take from the main menu, this program has a couple other features!
+
+### Backup and restoring Functionality
+
+Whenever you make a change to your contact data, the change will be reflected in a backup file.
 You can reload all of your data from a backup by using the Import/Restore menu option.
+
+### Grouping
+
+Groups can be assigned to contacts to enhance you searchign capabilities.
+Contacts can belong to any number of the predefined groups:
+1. Friends
+2. Family
+3. Work

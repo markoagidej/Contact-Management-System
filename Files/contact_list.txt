@@ -1,0 +1,3 @@
+Email|Name|Phone Number|Address|Notes|Groups
+first@place.com|7325551100|1 Made up place|A friend I met at work|Friends,Work
+second@place.com|7325552100|1 Made up place||

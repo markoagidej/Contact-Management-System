@@ -1,4 +1,10 @@
 
+import re
+
+contact_fields = []
+contact_list = {}
+
+
 def add_contact():
     pass
 
@@ -37,17 +43,38 @@ def update_backup():
 
 
 def main ():
+    try:
+        with open("Files/contact_list.txt", "r") as file:
+            lines = file.readlines()
+            contact_fields = lines[0].strip().split("|")
+
+            line_items = []
+            line_counter = 1
+            while line_counter < len(lines):
+                line_items.append(lines[line_counter].strip().split("|"))
+                line_counter += 1
+            for line in line_items:
+                contact_list[line[0]] = line[1:]
+
+            print(contact_fields)
+            for key, item in contact_list.items():
+                print(f"{key}, {item}")
+
+    except Exception as e:
+        print(e)
+        print("Base file corrupt!")
+
     while True:
-        print("Welcome to the Contact Management System!\n\n")
-        print("Menu:\n")
-        print("1. Add a new contact\n")
-        print("2. Edit an existing contact\n")
-        print("3. Delete a contact\n")
-        print("4. Search for a contact\n")
-        print("5. Display all contacts\n")
-        print("6. Export contacts to a text file\n")
-        print("7. Import contacts from a text file\n")
-        print("8. Quit\n")
+        print("Welcome to the Contact Management System!\n")
+        print("Menu:")
+        print("1. Add a new contact")
+        print("2. Edit an existing contact")
+        print("3. Delete a contact")
+        print("4. Search for a contact")
+        print("5. Display all contacts")
+        print("6. Export contacts to a text file")
+        print("7. Import contacts from a text file")
+        print("8. Quit")
 
         choice = input()
 
