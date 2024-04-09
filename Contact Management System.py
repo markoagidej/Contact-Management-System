@@ -27,6 +27,10 @@ def add_contact():
                 break
             else:
                 contact_data.append(field)
+    else:
+        answer = input("Would you like to create a new field? (y/n)")
+        if answer == 'y':
+            contact_data.append(new_field(input("Enter title of the new field: ")))
 
     contact_list[email] = contact_data
     print(f"Added contact for {email}: {contact_data}")
@@ -43,7 +47,13 @@ def edit_contact():
 def delete_contact():
     global contact_fields
     global contact_list
-    pass
+    
+    delete = input("Enter the email of the contact you want to delete: ")
+    try:
+        del contact_list[delete]
+        print(f"Deleted {delete} from contacts!")
+    except:
+        print(f"There is no contact with the email of {delete}!")
 
 
 def search_contact():
@@ -86,6 +96,7 @@ def quit_app():
 def update_backup():
     pass
 
+
 def validate_email(email_string):
     global contact_fields
     global contact_list
@@ -99,6 +110,16 @@ def validate_email(email_string):
         return False
     
     return True
+
+
+def new_field(field_name):
+    contact_fields.append(field_name)
+    print(f"New field, {field_name}, created!")
+    field_detail = input(f"Enter data for {field_name}: ")
+    for detail in contact_list.values:
+        detail.append()
+    return field_detail
+
 
 def main ():
     global contact_fields
