@@ -20,6 +20,8 @@ def add_contact():
                 email = input("Enter email address: ")
                 if validate_email(email):
                     break
+        elif field == "Group":
+            group_toggle()
         else:
             field = input(f"Enter {field}: ")
             if field == "/end":
@@ -29,9 +31,9 @@ def add_contact():
             else:
                 contact_data.append(field)
     else:
-        answer = input("Type 'yes' to create a new field")
+        answer = input("Type 'yes' to create a new field: ")
         if answer == 'yes':
-            contact_data.append(new_field(input("Enter title of the new field: ")))
+            contact_data.append(new_field())
 
     contact_list[email] = contact_data
     print(f"Added contact for {email}: {contact_data}")
@@ -47,6 +49,8 @@ def edit_contact():
         edit = input("Enter the email of the contact you would like to edit: ")
         if edit in contact_list:
 
+            contact_field_len = len(contact_fields)
+
             while True:
                 try:
                     field_counter = 0
@@ -54,16 +58,18 @@ def edit_contact():
                     for field in contact_fields:
                         print(f"{field_counter + 1}. {field}")
                         field_counter += 1
+                    else:
+                        print(f"{field_counter + 1}. New Field")
                     choice = int(input())
                     choice_index = choice - 1
 
-                    if choice_index >= len(contact_fields) or choice_index < 0:
-                        print(f"Choose a number between 1 and {len(contact_fields) - 1}!")
+                    if choice_index > contact_field_len or choice_index < 0:
+                        print(f"Choose a number between 1 and {contact_field_len}!")
                         continue
 
                     break
                 except:
-                    print(f"Choose a number between 1 and {len(contact_fields) - 1}!")
+                    print(f"Choose a number between 1 and {contact_field_len}!")
                     continue
 
             if choice_index == 0:
@@ -87,6 +93,10 @@ def edit_contact():
                     contact_list[new_email] = contact_list[edit]
 
                 print(f"Contact for {new_email} created!")
+                break
+            elif choice_index == contact_field_len:
+                new_field_data = new_field()
+                contact_list[edit][choice_index - 1] = new_field_data
                 break
             else:
                 new_input = input(f"Enter new data for {edit} in {contact_fields[choice_index]}: ")
@@ -137,12 +147,12 @@ def export_contacts():
     current_datetime = datetime.datetime.now()
     formatted_date = current_datetime.strftime("%Y-%m-%d %H-%M-%S")
     filename = "Contact_List " + str(formatted_date) +".txt"
-    with open(f"Exports\\{filename}", 'x') as file:
+    with open(f"{filename}", 'w') as file:
         file.write("|".join(contact_fields))
         for contact, details in contact_list.items():
-            file.write("\n" + "|".join(contact, "|".join(details)))
+            file.write("\n" + "|".join((contact, "|".join(details))))
 
-    print(f"Saved {filename} to Exports folder!")
+    print(f"Saved {filename}!")
 
 
 def import_contacts():
@@ -175,13 +185,35 @@ def validate_email(email_string):
     return True
 
 
-def new_field(field_name):
-    contact_fields.append(field_name)
-    print(f"New field, {field_name}, created!")
-    field_detail = input(f"Enter data for {field_name}: ")
-    for detail in contact_list.values:
-        detail.append()
-    return field_detail
+def group_toggle():
+    pass
+
+
+def new_field():
+    global contact_fields
+    global contact_list
+
+    while True:
+        field_name = input("Enter a title for the new field: ")
+        if field_name not in contact_fields:
+            contact_fields.append(field_name)
+            print(f"New field, {field_name}, created!")
+            field_detail = input(f"Enter data for {field_name}: ")
+            for detail in contact_list.values():
+                detail.append("")
+            return field_detail
+        else:
+            print("That field already exists! Try a different field title.")
+            continue
+
+
+def debugger():
+    global contact_fields
+    global contact_list
+
+    contact_fields.append("new")
+    for detail in contact_list.values():
+        detail.append("")
 
 
 def main ():
@@ -201,16 +233,14 @@ def main ():
             for line in line_items:
                 contact_list[line[0]] = line[1:]
 
-            # print(contact_fields)
-            # for key, item in contact_list.items():
-            #     print(f"{key}, {item}")
-
     except Exception as e:
         print(e)
         print("Base file corrupt!")
 
+        
+    print("Welcome to the Contact Management System!\n")
+
     while True:
-        print("Welcome to the Contact Management System!\n")
         print("Menu:")
         print("1. Add a new contact")
         print("2. Edit an existing contact")
@@ -220,6 +250,7 @@ def main ():
         print("6. Export contacts to a text file")
         print("7. Import contacts from a text file")
         print("8. Quit")
+        # print("9. debugger")
 
         choice = input()
 
@@ -239,6 +270,8 @@ def main ():
             import_contacts()
         elif choice == "8":
             quit_app()
+        # elif choice == "9":
+        #     debugger()
         else:
             print("Please enter a number 1-8!")
 
