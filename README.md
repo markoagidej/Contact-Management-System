@@ -15,7 +15,7 @@ Each contact contains multiple fields for information, as listed below. Email is
 5. Notes
 5. Groups
 
-Additionally, you have the option to add your own fields!
+Additionally, you have the option to add your own fields when creating or editing a contact!
 
 After launching the app, you will be presented with a menu which has 8 options. Simply type the number of the option you would like to perform and hit ENTER.
 The menu options are as follows:
@@ -34,7 +34,7 @@ When adding a new contact, you will first be prompted to enter a valid email add
 If the address is valid and does not already exist in your contacts, you will then be asked to fill in each of the remaining fields (which can remain empty if you wish).
 If you enter a non-valid email or that email is already in your contacts, you will recieve the corresponding error messege.
 At this point you will also have the option to create your own contact field with a (y/n) prompt.
-Entering 'n' will finish adding hte contact, while 'y' will prompt you for the name of your new field then the data you would like to enter.
+Entering 'y' will prompt you for the name of your new field then the data you would like to enter. Entering anything else will finish making the contact.
 > ***NOTE:*** Any custom field you enter will now show up as an option when creatign a new contact! 
 At any time after entering a valid email address you can type '/end' to leave the rest of the field empty
 

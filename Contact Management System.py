@@ -113,10 +113,23 @@ def delete_contact(to_delete):
     global contact_fields
     global contact_list
     
-    try:
-        del contact_list[to_delete]
-        print(f"Deleted {to_delete} from contacts!")
-    except:
+    if to_delete in contact_list:
+        print("Are you sure you would like to delete this contact (y/n):")
+        details_string = ""
+        field_num = 1
+        for field_detail in contact_list[to_delete]:
+            details_string += contact_fields[field_num] + " - " + field_detail + " | "
+            field_num += 1
+        print(f"{to_delete}: {details_string}")
+
+        answer = input()
+        if answer == "y":
+            del contact_list[to_delete]
+            print(f"Deleted {to_delete} from contacts!")
+        else:
+            print("No contacts deleted!")
+
+    else:
         print(f"There is no contact with the email of {to_delete}!")
 
 
@@ -152,7 +165,7 @@ def export_contacts():
         for contact, details in contact_list.items():
             file.write("\n" + "|".join((contact, "|".join(details))))
 
-    print(f"Saved {filename}!")
+    print(f"Saved {filename} to Files/Exports folder!")
 
 
 def import_contacts():
