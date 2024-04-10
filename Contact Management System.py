@@ -147,7 +147,7 @@ def export_contacts():
     current_datetime = datetime.datetime.now()
     formatted_date = current_datetime.strftime("%Y-%m-%d %H-%M-%S")
     filename = "Contact_List " + str(formatted_date) +".txt"
-    with open(f"{filename}", 'w') as file:
+    with open(f"Files\\Exports\\{filename}", 'w') as file:
         file.write("|".join(contact_fields))
         for contact, details in contact_list.items():
             file.write("\n" + "|".join((contact, "|".join(details))))
@@ -167,6 +167,8 @@ def quit_app():
 
 
 def update_backup():
+    global contact_fields
+    global contact_list
     pass
 
 
@@ -186,6 +188,8 @@ def validate_email(email_string):
 
 
 def group_toggle():
+    global contact_fields
+    global contact_list
     pass
 
 
