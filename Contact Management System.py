@@ -4,7 +4,11 @@ import datetime
 
 contact_fields = []
 contact_list = {}
-
+CONTACT_GROUPS = {
+    "Friends": False,
+    "Family": False,
+    "Work": False
+    }
 
 def add_contact():
     global contact_fields
@@ -20,8 +24,8 @@ def add_contact():
                 email = input("Enter email address: ")
                 if validate_email(email):
                     break
-        elif field == "Group":
-            group_toggle()
+        elif field == "Groups":
+            contact_data.append(group_toggle())
         else:
             field = input(f"Enter {field}: ")
             if field == "/end":
@@ -53,13 +57,13 @@ def edit_contact():
 
             while True:
                 try:
-                    field_counter = 0
+                    field_counter = 1
                     print("Which field would you like to edit?")
                     for field in contact_fields:
-                        print(f"{field_counter + 1}. {field}")
+                        print(f"{field_counter}. {field}")
                         field_counter += 1
                     else:
-                        print(f"{field_counter + 1}. New Field")
+                        print(f"{field_counter}. New Field")
                     choice = int(input())
                     choice_index = choice - 1
 
@@ -93,6 +97,9 @@ def edit_contact():
                     contact_list[new_email] = contact_list[edit]
 
                 print(f"Contact for {new_email} created!")
+                break
+            elif choice_index == 5:
+                contact_list[edit][4] = group_toggle(edit)
                 break
             elif choice_index == contact_field_len:
                 new_field_data = new_field()
@@ -234,10 +241,79 @@ def validate_email(email_string):
     return True
 
 
-def group_toggle():
+def group_toggle(email_string = ''):
     global contact_fields
     global contact_list
-    pass
+    global CONTACT_GROUPS
+
+    if email_string:
+        group_list = contact_list[email_string][4].split(",")
+
+        groups_this = CONTACT_GROUPS
+        for group in group_list:
+            if group in groups_this:
+                groups_this[group] = True
+
+        if group_list[0]:
+            print(f"{email_string} belongs to these groups:")
+            for group in group_list:
+                print(group)
+        else:
+            print(f"{email_string} does not belong to any groups!")
+
+    else:
+        groups_this = CONTACT_GROUPS
+
+    while True:
+        print("1. Friends")
+        print("2. Family")
+        print("3. Work")
+        print("4. Finish")
+        while True:
+            answer = int(input("Enter the number of the group you would like to toggle: "))
+            if answer < 1 or answer > 4:
+                print("Enter a number between 1 and 4!")
+                continue
+            else:
+                break
+
+        if answer == 1:
+            if groups_this["Friends"]:
+                groups_this["Friends"] = False
+            else:
+                groups_this["Friends"] = True
+        elif answer == 2:
+            if groups_this["Family"]:
+                groups_this["Family"] = False
+            else:
+                groups_this["Family"] = True
+        elif answer == 3:
+            if groups_this["Work"]:
+                groups_this["Work"] = False
+            else:
+                groups_this["Work"] = True
+        else:
+            break
+
+        print("Now belongs to these groups:")
+        for group, value in groups_this.items():
+            if value:
+                print(group)                
+                
+    print("Finally set to these groups:")
+    for group, value in groups_this.items():
+        if value:
+            print(group)
+
+    entry = ''
+    for group in groups_this:
+        if entry:
+            if groups_this[group]:
+                entry += f",{group}"
+        else:
+            if groups_this[group]:
+                entry += group
+    return entry
 
 
 def new_field():
