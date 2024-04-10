@@ -136,7 +136,41 @@ def delete_contact(to_delete):
 def search_contact():
     global contact_fields
     global contact_list
-    pass
+    
+    field_label = 1
+    for field in contact_fields:
+        print(f"{field_label}. {field}")
+        field_label += 1
+
+    while True:
+        answer = int(input("Which field would you like to search by?: "))
+        if answer > 0 or answer <= len(contact_fields):
+            break
+        else:
+            print(f"Input a number between 1 and {len(contact_fields)}")
+            continue
+
+    answer_field_index = answer - 1
+    search = input("What would you like to search for?: ")
+    search_lowered = search.lower()
+    return_list = []
+    if answer_field_index == 0:
+        for email in contact_list.keys():
+            email_lowered = email.lower()
+            if search_lowered in email_lowered:
+                return_list.append(email)
+    else:
+        for email, detail in contact_list.items():
+            detail_lowered = detail[answer_field_index - 1].lower()
+            if search_lowered in detail_lowered:
+                return_list.append([email, detail[answer_field_index - 1]])
+        
+    if return_list:
+        print(f"Found matches for \'{search}\' in \'{contact_fields[answer - 1]}\' of the following contacts:")
+        for result in return_list:
+            print(result)
+    else:
+        print("No matches found!")
 
 
 def dispaly_contacts():
