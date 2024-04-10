@@ -1,5 +1,6 @@
 
 import re
+import datetime
 
 contact_fields = []
 contact_list = {}
@@ -28,8 +29,8 @@ def add_contact():
             else:
                 contact_data.append(field)
     else:
-        answer = input("Would you like to create a new field? (y/n)")
-        if answer == 'y':
+        answer = input("Type 'yes' to create a new field")
+        if answer == 'yes':
             contact_data.append(new_field(input("Enter title of the new field: ")))
 
     contact_list[email] = contact_data
@@ -41,19 +42,72 @@ def add_contact():
 def edit_contact():
     global contact_fields
     global contact_list
-    pass
+    
+    while True:
+        edit = input("Enter the email of the contact you would like to edit: ")
+        if edit in contact_list:
+
+            while True:
+                try:
+                    field_counter = 0
+                    print("Which field would you like to edit?")
+                    for field in contact_fields:
+                        print(f"{field_counter + 1}. {field}")
+                        field_counter += 1
+                    choice = int(input())
+                    choice_index = choice - 1
+
+                    if choice_index >= len(contact_fields) or choice_index < 0:
+                        print(f"Choose a number between 1 and {len(contact_fields) - 1}!")
+                        continue
+
+                    break
+                except:
+                    print(f"Choose a number between 1 and {len(contact_fields) - 1}!")
+                    continue
+
+            if choice_index == 0:
+                while True:
+                    conversion = input("Would you like to [o]verwrite this email or create a contact with [d]uplicated data? (o/d)")
+                    if conversion == "o" or conversion == "d":
+                        break
+                    else:
+                        print("Enter 'o' to overwrite email, or 'd' to create a new contact with duplicate data.")
+                        continue
+                
+                while True:
+                    new_email = input("Enter the new email: ")
+                    if validate_email(new_email):
+                        break
+
+                if conversion == "o":
+                    contact_list[new_email] = contact_list[edit]
+                    del contact_list[edit]
+                elif conversion == "d":
+                    contact_list[new_email] = contact_list[edit]
+
+                print(f"Contact for {new_email} created!")
+                break
+            else:
+                new_input = input(f"Enter new data for {edit} in {contact_fields[choice_index]}: ")
+                contact_list[edit][choice_index - 1] = new_input
+                print(f"Set {contact_fields[choice_index]} for contact {edit} as: {new_input}")
+                break
+
+        else:
+            print(f"{edit} is not a contact in your list!")
+            continue
 
 
-def delete_contact():
+def delete_contact(to_delete):
     global contact_fields
     global contact_list
     
-    delete = input("Enter the email of the contact you want to delete: ")
     try:
-        del contact_list[delete]
-        print(f"Deleted {delete} from contacts!")
+        del contact_list[to_delete]
+        print(f"Deleted {to_delete} from contacts!")
     except:
-        print(f"There is no contact with the email of {delete}!")
+        print(f"There is no contact with the email of {to_delete}!")
 
 
 def search_contact():
@@ -79,7 +133,16 @@ def dispaly_contacts():
 def export_contacts():
     global contact_fields
     global contact_list
-    pass
+    
+    current_datetime = datetime.datetime.now()
+    formatted_date = current_datetime.strftime("%Y-%m-%d %H-%M-%S")
+    filename = "Contact_List " + str(formatted_date) +".txt"
+    with open(f"Exports\\{filename}", 'x') as file:
+        file.write("|".join(contact_fields))
+        for contact, details in contact_list.items():
+            file.write("\n" + "|".join(contact, "|".join(details)))
+
+    print(f"Saved {filename} to Exports folder!")
 
 
 def import_contacts():
@@ -126,7 +189,7 @@ def main ():
     global contact_list
 
     try:
-        with open("Files/contact_list.txt", "r") as file:
+        with open("Files\\contact_list.txt", "r") as file:
             lines = file.readlines()
             contact_fields = lines[0].strip().split("|")
 
@@ -138,9 +201,9 @@ def main ():
             for line in line_items:
                 contact_list[line[0]] = line[1:]
 
-            print(contact_fields)
-            for key, item in contact_list.items():
-                print(f"{key}, {item}")
+            # print(contact_fields)
+            # for key, item in contact_list.items():
+            #     print(f"{key}, {item}")
 
     except Exception as e:
         print(e)
@@ -165,7 +228,7 @@ def main ():
         elif choice == "2":
             edit_contact()
         elif choice == "3":
-            delete_contact()
+            delete_contact(input("Enter the email of the contact you want to delete: "))
         elif choice == "4":
             search_contact()
         elif choice == "5":
