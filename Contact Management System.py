@@ -246,6 +246,9 @@ def export_contacts():
     global contact_fields
     global contact_list
     
+    if not os.path.exists("Files\\Exports"):
+        os.makedirs("Files\\Exports")
+
     current_datetime = datetime.datetime.now()
     formatted_date = current_datetime.strftime("%Y-%m-%d %H-%M-%S")
     filename = "Contact_List_" + str(formatted_date) +".txt"
@@ -400,6 +403,9 @@ def quit_app():
 def update_backup():
     global contact_fields
     global contact_list
+
+    if not os.path.exists("Files\\Backups"):
+        os.makedirs("Files\\Backups")
 
     current_datetime = datetime.datetime.now()
     formatted_date = current_datetime.strftime("%Y-%m-%d %H-%M-%S")
