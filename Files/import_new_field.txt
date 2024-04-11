@@ -1,6 +1,6 @@
 Email|Name|Phone Number|Address|Notes|Groups|Sports
-soccer@field.org|||||Soccer
-baseball@field.org|||||Baseball
-football@field.org|||||football
-nothing@field.org|||||
-to@test.zzz|All field functions|create a new field in your documents|then create another called "SPORTS"(not matching case in this file)|Import this again|"Sports" should match case here, but still keep all data!
+soccer@field.org|Pele|10|Brasil|The GOAT|Soccer|
+baseball@field.org||||||Baseball
+football@field.org||||||football
+nothing@field.org||||||
+to@test.all|field functions|create a new field in your documents|then create another called "SPORTS"(not matching case in this file)|Import this again|"Sports" should match case here, but still keep all data!

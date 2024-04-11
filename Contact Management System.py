@@ -189,14 +189,57 @@ def dispaly_contacts():
     global contact_fields
     global contact_list
     
-    for contact, details in contact_list.items():
-        details_string = ""
-        field_num = 1
-        for field_detail in details:
-            details_string += contact_fields[field_num] + " - " + field_detail + " | "
-            field_num += 1
+    answer = input("Would you like to display your contacts sorted? (y/n): ")
+    if answer == "y":
+        while True:
+            field_label = 1
+            for field in contact_fields:
+                print(f"{field_label}. {field}")
+                field_label += 1
+            try:
+                choice = int(input("Selects which field you would like to sort contacts by: "))
+            except:
+                print(f"Enter a number between 1 and {len(contact_fields)}!")
+                continue
+            if choice < 1 or choice > len(contact_fields):
+                print(f"Enter a number between 1 and {len(contact_fields)}!")
+                continue
+            else:
+                break
 
-        print(f"{contact}: {details_string}")
+        sorted_contacts = []
+        if choice == 1:
+            sorted_contacts = dict(sorted(contact_list.items()))
+            for contact, details in sorted_contacts.items():
+                details_string = ""
+                field_num = 1
+                for field_detail in details:
+                    details_string += contact_fields[field_num] + " - " + field_detail + " | "
+                    field_num += 1
+
+                print(f"{contact}: {details_string}")
+        else:
+            field_index = choice - 1
+            detail_index = field_index - 1
+            for email, detail in contact_list.items():
+                sorted_contacts.append([detail[detail_index].lower(), email])
+            sorted_contacts = sorted(sorted_contacts)
+            for contact in sorted_contacts:
+                details_string = ''
+                field_num = 1
+                for field_detail in contact_list[contact[1]]:
+                    details_string += contact_fields[field_num] + " - " + field_detail + " | "
+                    field_num += 1
+                print(f"{contact[1]}: {details_string}")
+    else:
+        for contact, details in contact_list.items():
+            details_string = ""
+            field_num = 1
+            for field_detail in details:
+                details_string += contact_fields[field_num] + " - " + field_detail + " | "
+                field_num += 1
+
+            print(f"{contact}: {details_string}")
 
 
 def export_contacts():
