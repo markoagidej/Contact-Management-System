@@ -15,6 +15,7 @@ Each contact contains multiple fields for information, as listed below. Email is
 5. Notes
 5. Groups
 
+Groups work differently than the other fields! Scroll tot he bottom of this and read "Grouping" for more info.
 Additionally, you have the option to add your own fields when creating or editing a contact!
 
 After launching the app, you will be presented with a menu which has 8 options. Simply type the number of the option you would like to perform and hit ENTER.
@@ -61,18 +62,21 @@ After choosing this option, you must pick which field you would like to search.
 ### 5. Display all contacts
 
 View a list of all your conacts.
-Before viewing the list, you will be asked if you would like the list ot be sorted by a certain field.
+Before viewing the list, you will be asked if you would like the list to be sorted by a certain field.
 
 ### 6. Export contacts to a text file
 
 Save the contacts you have added to a .txt file to be imported by someone else using this app!
+These will appear in the "Files\Exports" folder.
 
 ### 7. Import/Restore contacts from a text file
 
 If you need to have the same contacts as someone else who uses this app, import their .txt file to add those contacts to your own list!
-If there are duplicate contacts, you will be asked to either keep yours, or overwrite from the incoming file.
-When selecteing this option, you will also be asked if you would like to import a file or restore a backup.
+The first choice for this option is to either import another file, or load the latest backup.
 > When restoring a backup, it will delete any changes you currently have and match the data in the resotre file exactly!
+To import a file, you must type the name of the file. Some example file are included!
+If there are duplicate contacts, you will be asked to either keep yours, or overwrite from the incoming file.
+Custom fields will also be merged into your file! If there is a field with teh same name, letter-case will match the imported file!
 
 ### 8. Quit
 
@@ -82,15 +86,22 @@ Exit the app. Thanks for using!
 
 In addition to the actions you can take from the main menu, this program has a couple other features!
 
-### Backup and restoring Functionality
+### Backup and Restoring Functionality
 
 Whenever you make a change to your contact data, the change will be reflected in a backup file.
-You can reload all of your data from a backup by using the Import/Restore menu option.
+You can reload all of your data from the latest backup by using the Import/Restore menu option.
 
 ### Grouping
 
-Groups can be assigned to contacts to enhance you searchign capabilities.
-Contacts can belong to any number of the predefined groups:
+Groups can be assigned to contacts to enhance you searching capabilities.
+Contacts can belong to any number of the predefined groups (or none!):
 1. Friends
 2. Family
 3. Work
+When making changes to a contact's Groups, selection will be toggled on or off.
+
+
+Thanks for using my app!
+
+Link to GitHub Repository:
+https://github.com/markoagidej/Contact-Management-System

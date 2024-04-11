@@ -1,0 +1,4 @@
+Email|Name|Phone Number|Address|Notes|Groups
+first@merge.co|Second|12341567|!real|Chill|
+second@merge.co|Second the second|98765432|2 Place Street||
+third@merge.co|Third|honestly just not a number||thired second note|Family

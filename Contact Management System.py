@@ -252,7 +252,7 @@ def import_contacts():
             print("Enter 'i' to import, or 'r' to restore the last backup!")
             continue
 
-    filename = input("Enter the name with extension of file you would like to import (import_example.txt for grading assignment):")
+    filename = input("Enter the name with extension of file you would like to import (look for examples in project prefixed with \"import_\"):")
     
     try:
         with open(f"Files\\{filename}", "r") as file:
@@ -298,8 +298,8 @@ def import_contacts():
         new_ext_field_index = 0
         for new_field_lower in new_field_ext_lower:
             if new_field_lower in contact_fields_ext_lower:
-                old_index = 6 + contact_fields_ext_lower.index(new_field_lower)
-                contact_fields[old_index] = new_field_ext[new_ext_field_index]
+                old_ext_index = contact_fields_ext_lower.index(new_field_lower)
+                contact_fields_ext[old_ext_index] = new_field_ext[new_ext_field_index]
                 new_ext_field_index += 1
             else:
                 contact_fields_ext.append(new_field_ext[new_ext_field_index])
