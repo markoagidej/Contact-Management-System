@@ -1,0 +1,5 @@
+Email|Name|Phone Number|Address|Notes|Groups|New Category|Last Category
+first@place.com|Joe Smith|7325551100|1 Made up place|A friend I met at work|Friends,Work||
+second@place.com|Jane Doe|7325552100|1 Made up place||||
+third@place.com|Reagan|12345678|2 Infinity|Met him at the event!|Friends|wild card|heat death
+thirdthesecond@place.com|Reagan|12345678|2 Infinity|Met him at the event!|Friends|wild card|

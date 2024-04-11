@@ -1,6 +1,7 @@
 
 import re
 import datetime
+import os
 
 contact_fields = []
 contact_list = {}
@@ -40,9 +41,8 @@ def add_contact():
             contact_data.append(new_field())
 
     contact_list[email] = contact_data
-    print(f"Added contact for {email}: {contact_data}")
-    
     update_backup()
+    print(f"Added contact for {email}: {contact_data}")
 
 
 def edit_contact():
@@ -97,18 +97,22 @@ def edit_contact():
                     contact_list[new_email] = contact_list[edit]
 
                 print(f"Contact for {new_email} created!")
+                update_backup()
                 break
             elif choice_index == 5:
                 contact_list[edit][4] = group_toggle(edit)
+                update_backup()
                 break
             elif choice_index == contact_field_len:
                 new_field_data = new_field()
                 contact_list[edit][choice_index - 1] = new_field_data
+                update_backup()
                 break
             else:
                 new_input = input(f"Enter new data for {edit} in {contact_fields[choice_index]}: ")
                 contact_list[edit][choice_index - 1] = new_input
                 print(f"Set {contact_fields[choice_index]} for contact {edit} as: {new_input}")
+                update_backup()
                 break
 
         else:
@@ -133,6 +137,7 @@ def delete_contact(to_delete):
         if answer == "y":
             del contact_list[to_delete]
             print(f"Deleted {to_delete} from contacts!")
+            update_backup()
         else:
             print("No contacts deleted!")
 
@@ -200,18 +205,52 @@ def export_contacts():
     
     current_datetime = datetime.datetime.now()
     formatted_date = current_datetime.strftime("%Y-%m-%d %H-%M-%S")
-    filename = "Contact_List " + str(formatted_date) +".txt"
+    filename = "Contact_List_" + str(formatted_date) +".txt"
     with open(f"Files\\Exports\\{filename}", 'w') as file:
         file.write("|".join(contact_fields))
         for contact, details in contact_list.items():
             file.write("\n" + "|".join((contact, "|".join(details))))
 
-    print(f"Saved {filename} to Files/Exports folder!")
+    print(f"Saved {filename} to Files\Exports folder!")
 
 
 def import_contacts():
     global contact_fields
     global contact_list
+
+    while True:
+        answer = input("Would you like to [i]mport a file or [r]estore the latest backup? (i/r)")
+        if answer == "r":
+            filelist = os.listdir("Files\\Backups")
+            if filelist:
+                filelist.sort()                
+                try:
+                    with open(f"Files\\Backups\\{filelist[-1]}", "r") as file:
+                        lines = file.readlines()
+                        contact_fields = lines[0].strip().split("|")
+
+                        line_items = []
+                        line_counter = 1
+                        while line_counter < len(lines):
+                            line_items.append(lines[line_counter].strip().split("|"))
+                            line_counter += 1
+                        for line in line_items:
+                            contact_list[line[0]] = line[1:]
+                    print(f"Restored from file {filelist[-1]}!")
+                except Exception as e:
+                    print(e)
+                    print("Base file corrupt!")
+
+            else:
+                print("No backups found!")
+                return
+
+            return
+        elif answer == "i":
+            break
+        else:
+            print("Enter 'i' to import, or 'r' to restore the last backup!")
+            continue
 
     filename = input("Enter the name with extension of file you would like to import (import_example.txt for grading assignment):")
     
@@ -236,7 +275,6 @@ def import_contacts():
         return
 
     # compare field list
-    # field_dupe = False
     if len(new_contact_fields) > 6 or len(contact_fields) > 6:
         if len(new_contact_fields) > 6:
             new_field_ext = new_contact_fields[6:]
@@ -270,13 +308,10 @@ def import_contacts():
                 new_ext_field_index += 1
 
         # add fields missing from new contact list to new
-        # ext_field_index = 0
         for field_lower in contact_fields_ext_lower:
             if field_lower not in new_field_ext_lower:
-                # new_field_ext.append(contact_fields_ext[ext_field_index])
                 for new_contact in new_contact_list.keys():
                     new_contact_list[new_contact].append('')
-                # ext_field_index += 1
 
         base_contact = contact_fields[0:6]
         contact_fields = base_contact + contact_fields_ext        
@@ -311,6 +346,9 @@ def import_contacts():
         for new_email, new_details in new_contact_list.items():
             contact_list[new_email] = new_details
 
+    update_backup()
+
+
 def quit_app():
     print("Thank you for using Contact Manager by Marko Gidej!")
     exit()
@@ -319,7 +357,14 @@ def quit_app():
 def update_backup():
     global contact_fields
     global contact_list
-    pass
+
+    current_datetime = datetime.datetime.now()
+    formatted_date = current_datetime.strftime("%Y-%m-%d %H-%M-%S")
+    filename = "Contact_List_BACKUP_" + str(formatted_date) +".txt"
+    with open(f"Files\\Backups\\{filename}", 'w') as file:
+        file.write("|".join(contact_fields))
+        for contact, details in contact_list.items():
+            file.write("\n" + "|".join((contact, "|".join(details))))
 
 
 def validate_email(email_string):
@@ -455,7 +500,6 @@ def main ():
                 line_counter += 1
             for line in line_items:
                 contact_list[line[0]] = line[1:]
-
     except Exception as e:
         print(e)
         print("Base file corrupt!")
@@ -471,7 +515,7 @@ def main ():
         print("4. Search for a contact")
         print("5. Display all contacts")
         print("6. Export contacts to a text file")
-        print("7. Import contacts from a text file")
+        print("7. Import/Restore from a text file")
         print("8. Quit")
         # print("9. debugger")
 
