@@ -212,8 +212,104 @@ def export_contacts():
 def import_contacts():
     global contact_fields
     global contact_list
-    pass
 
+    filename = input("Enter the name with extension of file you would like to import (import_example.txt for grading assignment):")
+    
+    try:
+        with open(f"Files\\{filename}", "r") as file:
+            lines = file.readlines()
+            new_contact_fields = lines[0].strip().split("|")
+            new_contact_list = {}
+
+            line_items = []
+            line_counter = 1
+            while line_counter < len(lines):
+                line_items.append(lines[line_counter].strip().split("|"))
+                line_counter += 1
+            for line in line_items:
+                new_contact_list[line[0]] = line[1:]
+    except FileNotFoundError:
+        print("Filename does not exist!")
+        return
+    except:
+        print("Could not open file")
+        return
+
+    # compare field list
+    # field_dupe = False
+    if len(new_contact_fields) > 6 or len(contact_fields) > 6:
+        if len(new_contact_fields) > 6:
+            new_field_ext = new_contact_fields[6:]
+            new_field_ext_lower = []
+            for field in new_field_ext:
+                new_field_ext_lower.append(field.lower())
+        else:
+            new_field_ext = []
+            new_field_ext_lower = []
+
+        if len(contact_fields) > 6:
+            contact_fields_ext = contact_fields[6:]
+            contact_fields_ext_lower = []
+            for field in contact_fields_ext:
+                contact_fields_ext_lower.append(field.lower())
+        else:
+            contact_fields_ext = []
+            contact_fields_ext_lower = []
+    
+        # add fields missing from current contact list to current (also the import casing will always take precedence)
+        new_ext_field_index = 0
+        for new_field_lower in new_field_ext_lower:
+            if new_field_lower in contact_fields_ext_lower:
+                old_index = 6 + contact_fields_ext_lower.index(new_field_lower)
+                contact_fields[old_index] = new_field_ext[new_ext_field_index]
+                new_ext_field_index += 1
+            else:
+                contact_fields_ext.append(new_field_ext[new_ext_field_index])
+                for contact in contact_list.keys():
+                    contact_list[contact].append('')
+                new_ext_field_index += 1
+
+        # add fields missing from new contact list to new
+        # ext_field_index = 0
+        for field_lower in contact_fields_ext_lower:
+            if field_lower not in new_field_ext_lower:
+                # new_field_ext.append(contact_fields_ext[ext_field_index])
+                for new_contact in new_contact_list.keys():
+                    new_contact_list[new_contact].append('')
+                # ext_field_index += 1
+
+        base_contact = contact_fields[0:6]
+        contact_fields = base_contact + contact_fields_ext        
+
+    # compare all emails
+    email_dupe = False
+    for email in contact_list:
+        for new_email in new_contact_list:
+            if email.lower() == new_email.lower():
+                email_dupe = True
+                break
+            if email_dupe:
+                break
+
+    if email_dupe:
+        print("Duplicate emails detected in imported file!")
+        print("Would you like to [o]verwrite your data or [k]eep it (o/k)")
+        while True:
+            answer = input()
+            if answer == "o":
+                for new_email, new_details in new_contact_list.items():
+                    contact_list[new_email] = new_details
+                break
+            elif answer == "k":
+                for new_email, new_details in new_contact_list.items():
+                    if new_email not in contact_list:
+                        contact_list[new_email] = new_details
+                break
+            else:
+                print("You must enter 'o'(overwrite) or 'k'(keep)!")
+    else:
+        for new_email, new_details in new_contact_list.items():
+            contact_list[new_email] = new_details
 
 def quit_app():
     print("Thank you for using Contact Manager by Marko Gidej!")
